@@ -1,0 +1,66 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+  formatDate,
+  getCategoryLabel,
+  getPublishedNotes
+} from "../../lib/content";
+import "../../styles/typography.scss";
+
+export async function getStaticPaths() {
+  const notes = getPublishedNotes(await getCollection("notes"));
+
+  return notes.map((note) => ({
+    params: { slug: note.slug },
+    props: { note }
+  }));
+}
+
+const { note } = Astro.props;
+const { Content, headings } = await note.render();
+const categoryLabel = getCategoryLabel(
+  note.data.parentCategory,
+  note.data.childCategory
+);
+---
+
+<BaseLayout title={note.data.title} description={note.data.description} pageClass="page-note">
+  <article class="note-article">
+    <header class="note-article__header panel">
+      <p class="eyebrow">{categoryLabel}</p>
+      <h1>{note.data.title}</h1>
+      <p class="note-article__description">{note.data.description}</p>
+
+      <div class="note-article__meta">
+        <span>{formatDate(note.data.date)}</span>
+        {note.data.tags.length > 0 && (
+          <div class="tag-list">
+            {note.data.tags.map((tag) => <span>#{tag}</span>)}
+          </div>
+        )}
+      </div>
+    </header>
+
+    <div class="note-article__body">
+      {
+        headings.length > 1 && (
+          <aside class="toc panel">
+            <p class="eyebrow">目录</p>
+            <ol>
+              {headings.map((heading) => (
+                <li>
+                  <a href={`#${heading.slug}`}>{heading.text}</a>
+                </li>
+              ))}
+            </ol>
+          </aside>
+        )
+      }
+
+      <div class="prose panel">
+        <Content />
+      </div>
+    </div>
+  </article>
+</BaseLayout>

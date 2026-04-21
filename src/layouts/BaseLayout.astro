@@ -1,0 +1,82 @@
+---
+import "../styles/global.scss";
+import { withBase } from "../lib/site";
+
+const {
+  title = "生活记录",
+  description = "一个以分类浏览和高质量阅读为核心的生活记录网站。",
+  pageClass = ""
+} = Astro.props;
+
+const siteTitle = "生活记录";
+const pageTitle = title === siteTitle ? siteTitle : `${title} · ${siteTitle}`;
+const navigationItems = [
+  { href: "/", label: "首页" },
+  { href: "/categories/", label: "分类" },
+  { href: "/notes/", label: "记录" },
+  { href: "/links/", label: "链接" }
+];
+const basePath = import.meta.env.BASE_URL;
+const normalizedCurrentPath = (() => {
+  const pathname = Astro.url.pathname;
+
+  if (!basePath || basePath === "/") {
+    return pathname;
+  }
+
+  const stripped = pathname.replace(basePath.replace(/\/$/, ""), "");
+  return stripped || "/";
+})();
+
+function isActivePath(path: string) {
+  if (path === "/") {
+    return normalizedCurrentPath === "/";
+  }
+
+  return normalizedCurrentPath.startsWith(path);
+}
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <div class="site-header__inner">
+          <a class="site-brand" href={withBase("/")}>
+            <span class="site-brand__label">记录站</span>
+            <span class="site-brand__title">{siteTitle}</span>
+          </a>
+
+          <nav class="site-nav" aria-label="主导航">
+            {
+              navigationItems.map((item) => (
+                <a href={withBase(item.href)} class:list={{ "is-active": isActivePath(item.href) }}>
+                  {item.label}
+                </a>
+              ))
+            }
+          </nav>
+        </div>
+      </header>
+
+      <main class:list={["page-main", pageClass]}>
+        <slot />
+      </main>
+
+      <footer class="site-footer">
+        <div class="site-footer__inner">
+          <p>内容持续更新中，欢迎把它当作一个生活与思考的存档页。</p>
+          <p>首版基于 Astro + MDX 构建，后续新增内容只需要增加文件。</p>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

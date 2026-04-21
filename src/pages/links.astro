@@ -1,0 +1,24 @@
+---
+import LinkIcons from "../components/LinkIcons.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { externalLinks } from "../data/links";
+---
+
+<BaseLayout title="链接">
+  <div class="page-stack">
+    <section class="section-block">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">外部链接</p>
+          <h1>我在这些地方继续更新</h1>
+        </div>
+      </div>
+
+      <p class="intro-copy panel">
+        这里适合放小红书、个人小网站、公开项目或你想让访问者继续探索的内容。后续新增链接时，只需要修改一个数据文件。
+      </p>
+
+      <LinkIcons links={externalLinks} />
+    </section>
+  </div>
+</BaseLayout>

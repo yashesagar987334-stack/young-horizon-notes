@@ -1,0 +1,78 @@
+---
+import { getCollection } from "astro:content";
+import CategoryNav from "../components/CategoryNav.astro";
+import LinkIcons from "../components/LinkIcons.astro";
+import NoteCard from "../components/NoteCard.astro";
+import ProfileHero from "../components/ProfileHero.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { externalLinks } from "../data/links";
+import { getCategoryGroupsWithCounts, getPublishedNotes } from "../lib/content";
+import { withBase } from "../lib/site";
+
+const notes = getPublishedNotes(await getCollection("notes"));
+const featuredNotes = notes.filter((note) => note.data.featured).slice(0, 3);
+const latestNotes = notes.slice(0, 6);
+const categoryGroups = getCategoryGroupsWithCounts(notes);
+---
+
+<BaseLayout title="生活记录">
+  <div class="page-stack">
+    <ProfileHero
+      title="满眼生机转化钧，天工人巧日争新"
+      subtitle="轻量记事，澄澈生活，这里是我的“不分组朋友圈”。“我与厦大”和“日常生活”里有我的真实足迹；“娱乐小站”里藏着我用 ai 做的有趣玩意。"
+      avatarSrc="/images/avatar/主页头像.jpg"
+      coverSrc="/images/covers/home-hero.svg"
+    />
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">内容选择</p>
+          <h2>从分类开始浏览</h2>
+        </div>
+        <a href={withBase("/categories/")} class="text-link">查看全部分类</a>
+      </div>
+
+      <CategoryNav groups={categoryGroups} />
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">精选记录</p>
+          <h2>先看一些代表性的内容</h2>
+        </div>
+        <a href={withBase("/notes/")} class="text-link">进入全部记录</a>
+      </div>
+
+      <div class="note-grid">
+        {featuredNotes.map((note) => <NoteCard note={note} />)}
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">最近更新</p>
+          <h2>持续写下生活与输入</h2>
+        </div>
+      </div>
+
+      <div class="note-grid note-grid--compact">
+        {latestNotes.map((note) => <NoteCard note={note} />)}
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">外部入口</p>
+          <h2>我在这些地方继续更新</h2>
+        </div>
+        <a href={withBase("/links/")} class="text-link">查看链接页</a>
+      </div>
+
+      <LinkIcons links={externalLinks} />
+    </section>
+  </div>
+</BaseLayout>

@@ -1,0 +1,27 @@
+---
+import { getCollection } from "astro:content";
+import NoteCard from "../../components/NoteCard.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getPublishedNotes } from "../../lib/content";
+import { withBase } from "../../lib/site";
+
+const notes = getPublishedNotes(await getCollection("notes"));
+---
+
+<BaseLayout title="全部记录">
+  <div class="page-stack">
+    <section class="section-block">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">记录列表</p>
+          <h1>按时间查看全部内容</h1>
+        </div>
+        <a href={withBase("/categories/")} class="text-link">按分类浏览</a>
+      </div>
+
+      <div class="note-grid">
+        {notes.map((note) => <NoteCard note={note} />)}
+      </div>
+    </section>
+  </div>
+</BaseLayout>

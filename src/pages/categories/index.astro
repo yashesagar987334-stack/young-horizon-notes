@@ -1,0 +1,30 @@
+---
+import { getCollection } from "astro:content";
+import CategoryNav from "../../components/CategoryNav.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCategoryGroupsWithCounts, getPublishedNotes } from "../../lib/content";
+import { withBase } from "../../lib/site";
+
+const notes = getPublishedNotes(await getCollection("notes"));
+const groups = getCategoryGroupsWithCounts(notes);
+---
+
+<BaseLayout title="分类">
+  <div class="page-stack">
+    <section class="section-block">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">分类总览</p>
+          <h1>按主题进入内容</h1>
+        </div>
+        <a href={withBase("/notes/")} class="text-link">查看全部记录</a>
+      </div>
+
+      <p class="intro-copy panel">
+        这里使用二级分类来整理内容。新增记录时，只要给文章填写正确的一级分类和二级分类，页面会自动把它放到对应的位置。
+      </p>
+
+      <CategoryNav groups={groups} />
+    </section>
+  </div>
+</BaseLayout>

@@ -1,0 +1,28 @@
+---
+import { toPublicAsset } from "../lib/site";
+
+type Props = {
+  title: string;
+  subtitle: string;
+  avatarSrc: string;
+  coverSrc: string;
+};
+
+const { title, subtitle, avatarSrc, coverSrc } = Astro.props as Props;
+---
+
+<section class="hero-card panel">
+  <div class="hero-card__cover">
+    <img src={toPublicAsset(coverSrc)} alt="" loading="eager" />
+  </div>
+
+  <div class="hero-card__content">
+    <img class="hero-card__avatar" src={toPublicAsset(avatarSrc)} alt="主页头像" />
+
+    <div class="hero-card__copy">
+      <p class="eyebrow hero-card__eyebrow">Young Horizon</p>
+      <h1>{title}</h1>
+      <p>{subtitle}</p>
+    </div>
+  </div>
+</section>

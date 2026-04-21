@@ -1,0 +1,83 @@
+---
+import { puzzleEntries } from "../data/puzzles";
+import { toPublicAsset } from "../lib/site";
+import puzzleGameToolScript from "../scripts/puzzle-game-tool.ts?url";
+
+const clientEntries = puzzleEntries.map((entry) => ({
+  ...entry,
+  imageSrc: toPublicAsset(entry.imageSrc)
+}));
+---
+
+<section
+  class="puzzle-tool"
+  data-puzzle-tool
+  data-puzzles={JSON.stringify(clientEntries)}
+  data-board-size="3"
+>
+  <section class="puzzle-tool__intro panel">
+    <div class="device-tool__hero-copy">
+      <h2>九宫格拼图</h2>
+      <p>
+        把值得纪念的图片做成轻量拼图，离线也能直接玩。第一版先用两张校园记忆做测试，等你觉得合适了，我们再继续往里加新的图片。
+      </p>
+    </div>
+
+    <p class="puzzle-tool__note">
+      当前先提供两张纪念图片测试。玩法固定为 3 x 3 的九宫格拼图：先选一张图，再点击两块交换位置，慢慢把画面拼回完整状态。
+    </p>
+  </section>
+
+  <section class="puzzle-tool__gallery" data-puzzle-picker>
+    {
+      clientEntries.map((entry, index) => (
+        <article
+          class:list={["puzzle-option", index === 0 && "is-active"]}
+          data-puzzle-card
+          data-slug={entry.slug}
+        >
+          <div class="puzzle-option__media">
+            <img src={entry.imageSrc} alt={entry.title} loading="lazy" />
+          </div>
+
+          <div class="puzzle-option__body">
+            <div>
+              <p class="eyebrow">娱乐小站 / 拼图游戏</p>
+              <h3>{entry.title}</h3>
+            </div>
+            <p>{entry.description}</p>
+            <button type="button" class="ghost-button" data-action="select-puzzle" data-slug={entry.slug}>
+              开始这一张
+            </button>
+          </div>
+        </article>
+      ))
+    }
+  </section>
+
+  <section class="puzzle-tool__playground panel">
+    <div class="puzzle-tool__playground-header">
+      <div>
+        <p class="eyebrow">当前拼图</p>
+        <h3 data-active-title></h3>
+      </div>
+
+      <button type="button" class="primary-button" data-action="shuffle-puzzle">重新打乱</button>
+    </div>
+
+    <p class="puzzle-tool__status" data-puzzle-status></p>
+
+    <div class="puzzle-tool__workspace">
+      <div class="puzzle-tool__reference">
+        <div class="puzzle-tool__preview">
+          <img data-active-image alt="" loading="lazy" />
+        </div>
+        <p class="puzzle-tool__reference-copy" data-active-description></p>
+      </div>
+
+      <div class="puzzle-board" data-puzzle-board></div>
+    </div>
+  </section>
+</section>
+
+<script type="module" src={puzzleGameToolScript}></script>

@@ -1,0 +1,31 @@
+---
+import {
+  DEVICE_COST_SESSION_KEY,
+  PRESET_DEVICE_TYPES
+} from "../lib/device-cost-tool";
+import deviceCostToolScript from "../scripts/device-cost-tool.ts?url";
+---
+
+<section
+  class="device-tool"
+  data-device-cost-tool
+  data-storage-key={DEVICE_COST_SESSION_KEY}
+  data-preset-types={JSON.stringify(PRESET_DEVICE_TYPES.map(String))}
+>
+  <section class="device-tool__intro panel">
+    <div class="device-tool__hero-copy">
+      <h2>电子产品均价</h2>
+      <p>
+        录入一台正在使用的电子设备，快速算出它现在平均每天花了多少钱。换设备之前，先把这笔账看得更直观一点。
+      </p>
+    </div>
+  </section>
+
+  <div class="device-tool__toolbar">
+    <button type="button" class="primary-button" data-action="add-card">+ 创建卡片</button>
+  </div>
+
+  <div class="device-tool__cards" data-cards></div>
+</section>
+
+<script type="module" src={deviceCostToolScript}></script>

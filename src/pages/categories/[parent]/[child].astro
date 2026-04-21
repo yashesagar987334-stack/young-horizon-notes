@@ -1,0 +1,71 @@
+---
+import { getCollection } from "astro:content";
+import DeviceCostTool from "../../../components/DeviceCostTool.astro";
+import NoteCard from "../../../components/NoteCard.astro";
+import PuzzleGameTool from "../../../components/PuzzleGameTool.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { categories } from "../../../data/categories";
+import { getPublishedNotes } from "../../../lib/content";
+import { withBase } from "../../../lib/site";
+
+export async function getStaticPaths() {
+  return categories.flatMap((parent) =>
+    parent.children.map((child) => ({
+      params: {
+        parent: parent.slug,
+        child: child.slug
+      },
+      props: {
+        parent,
+        child
+      }
+    }))
+  );
+}
+
+const { parent, child } = Astro.props;
+const allNotes = getPublishedNotes(await getCollection("notes"));
+const notes = allNotes.filter(
+  (note) =>
+    note.data.parentCategory === parent.slug &&
+    note.data.childCategory === child.slug
+);
+---
+
+<BaseLayout title={`${parent.label} / ${child.label}`}>
+  <div class="page-stack">
+    <section class="section-block">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">{parent.label}</p>
+          <h1>{child.label}</h1>
+        </div>
+        <a href={withBase("/categories/")} class="text-link">返回分类总览</a>
+      </div>
+
+      {child.kind !== "tool" && <p class="intro-copy panel">{child.description}</p>}
+
+      {
+        child.kind === "tool" ? (
+          child.slug === "device-costs" ? (
+            <DeviceCostTool />
+          ) : child.slug === "small-expenses" ? (
+            <PuzzleGameTool />
+          ) : (
+            <div class="empty-panel panel">
+              <p>这个工具分类还没有接入具体页面，后续可以继续在这里补充新的小项目。</p>
+            </div>
+          )
+        ) : notes.length > 0 ? (
+          <div class="note-grid">
+            {notes.map((note) => <NoteCard note={note} />)}
+          </div>
+        ) : (
+          <div class="empty-panel panel">
+            <p>这个分类还没有内容。后续你只要新增一篇对应分类的 MDX 文件，它就会自动出现在这里。</p>
+          </div>
+        )
+      }
+    </section>
+  </div>
+</BaseLayout>

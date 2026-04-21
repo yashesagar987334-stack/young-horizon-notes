@@ -1,0 +1,52 @@
+---
+import { getCategoryUrl } from "../lib/content";
+import type { ParentCategory } from "../data/categories";
+
+type CategoryGroup = ParentCategory & {
+  totalCount: number;
+  toolCount: number;
+  children: Array<
+    ParentCategory["children"][number] & {
+      count: number;
+    }
+  >;
+};
+
+type Props = {
+  groups: CategoryGroup[];
+};
+
+const { groups } = Astro.props as Props;
+---
+
+<div class="category-groups">
+  {
+    groups.map((group) => (
+      <article class="category-group panel">
+        <div class="category-group__header">
+          <div>
+            <p class="eyebrow">一级分类</p>
+            <h2>{group.label}</h2>
+          </div>
+
+          <span class="metric-pill">
+            {group.toolCount > 0 ? `${group.toolCount} 个工具` : `${group.totalCount} 篇`}
+          </span>
+        </div>
+
+        <p class="category-group__description">{group.description}</p>
+
+        <div class="category-group__links">
+          {group.children.map((child) => (
+            <a href={getCategoryUrl(group.slug, child.slug)} class="category-link">
+              <span class="category-link__title">{child.label}</span>
+              <span class="category-link__meta">
+                {child.kind === "tool" ? "工具页" : `${child.count} 篇`}
+              </span>
+            </a>
+          ))}
+        </div>
+      </article>
+    ))
+  }
+</div>

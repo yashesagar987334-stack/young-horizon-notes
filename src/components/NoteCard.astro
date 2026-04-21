@@ -1,0 +1,45 @@
+---
+import { formatDate, getCategoryLabel, getNoteUrl } from "../lib/content";
+import { getAssetUrl } from "../lib/content";
+import type { NoteEntry } from "../lib/content";
+
+type Props = {
+  note: NoteEntry;
+};
+
+const { note } = Astro.props as Props;
+const href = getNoteUrl(note);
+const categoryLabel = getCategoryLabel(
+  note.data.parentCategory,
+  note.data.childCategory
+);
+---
+
+<article class="note-card panel">
+  {note.data.cover && (
+    <a href={href} class="note-card__cover">
+      <img src={getAssetUrl(note.data.cover)} alt={note.data.title} loading="lazy" />
+    </a>
+  )}
+
+  <div class="note-card__body">
+    <div class="note-card__meta">
+      <span>{categoryLabel}</span>
+      <span>{formatDate(note.data.date)}</span>
+    </div>
+
+    <h3>
+      <a href={href}>{note.data.title}</a>
+    </h3>
+
+    <p>{note.data.description}</p>
+
+    <div class="note-card__footer">
+      <div class="tag-list">
+        {note.data.tags.slice(0, 3).map((tag) => <span>#{tag}</span>)}
+      </div>
+
+      {note.data.featured && <span class="metric-pill">精选</span>}
+    </div>
+  </div>
+</article>
