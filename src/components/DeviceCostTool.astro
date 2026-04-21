@@ -3,7 +3,6 @@ import {
   DEVICE_COST_SESSION_KEY,
   PRESET_DEVICE_TYPES
 } from "../lib/device-cost-tool";
-import deviceCostToolScript from "../scripts/device-cost-tool.ts?url";
 ---
 
 <section
@@ -28,4 +27,8 @@ import deviceCostToolScript from "../scripts/device-cost-tool.ts?url";
   <div class="device-tool__cards" data-cards></div>
 </section>
 
-<script type="module" src={deviceCostToolScript}></script>
+<script>
+  import { initDeviceCostTool } from "../scripts/device-cost-tool";
+
+  initDeviceCostTool();
+</script>

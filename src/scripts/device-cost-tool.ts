@@ -100,12 +100,6 @@ export function initDeviceCostTool() {
   }
 }
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initDeviceCostTool);
-} else {
-  initDeviceCostTool();
-}
-
 function createBlankCard(id = crypto.randomUUID()): DeviceCostCardRecord {
   return {
     id,

@@ -146,12 +146,6 @@ export function initPuzzleGameTool() {
   }
 }
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initPuzzleGameTool);
-} else {
-  initPuzzleGameTool();
-}
-
 function parsePuzzles(value: string | undefined) {
   if (!value) {
     return [] as PuzzleEntry[];

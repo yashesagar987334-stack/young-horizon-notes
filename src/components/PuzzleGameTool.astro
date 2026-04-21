@@ -1,7 +1,6 @@
 ---
 import { puzzleEntries } from "../data/puzzles";
 import { toPublicAsset } from "../lib/site";
-import puzzleGameToolScript from "../scripts/puzzle-game-tool.ts?url";
 
 const clientEntries = puzzleEntries.map((entry) => ({
   ...entry,
@@ -80,4 +79,8 @@ const clientEntries = puzzleEntries.map((entry) => ({
   </section>
 </section>
 
-<script type="module" src={puzzleGameToolScript}></script>
+<script>
+  import { initPuzzleGameTool } from "../scripts/puzzle-game-tool";
+
+  initPuzzleGameTool();
+</script>
