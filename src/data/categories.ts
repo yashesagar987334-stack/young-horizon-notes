@@ -15,7 +15,7 @@ export type ParentCategory = {
 export const categories: ParentCategory[] = [
   {
     slug: "xmu",
-    label: "我与厦大",
+    label: "我在厦大",
     description: "关于厦大里的项目、校园生活，以及毕业前想认真完成的一些事情。",
     children: [
       {

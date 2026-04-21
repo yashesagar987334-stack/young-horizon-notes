@@ -13,12 +13,12 @@ export const puzzleEntries: PuzzleEntry[] = [
     slug: "jiageng-statue",
     title: "嘉庚像",
     description: "先从熟悉的校园记忆开始，慢慢把画面拼回来。",
-    imageSrc: "/images/puzzles/嘉庚像.png"
+    imageSrc: "/images/puzzles/嘉庚像-optimized.jpg"
   },
   {
     slug: "furong-lakeside",
     title: "芙蓉湖畔",
     description: "把湖边这一幕拆成九块，再安静地拼回完整。",
-    imageSrc: "/images/puzzles/芙蓉湖畔.png"
+    imageSrc: "/images/puzzles/芙蓉湖畔-optimized.jpg"
   }
 ];

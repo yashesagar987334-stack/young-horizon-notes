@@ -14,7 +14,7 @@ export const externalLinks: ExternalLink[] = [
     url: "https://www.xiaohongshu.com/user/profile/65336faa000000000200d5fa",
     icon: "xiaohongshu",
     description: "研究生阶段持续分享考研经验、备考方法与相关内容整理的小红书账号。",
-    iconImageSrc: "/images/icons/小红书图标.png"
+    iconImageSrc: "/images/icons/小红书图标-optimized.png"
   },
   {
     name: "个人小站",
@@ -26,7 +26,8 @@ export const externalLinks: ExternalLink[] = [
     name: "项目记录",
     url: "https://github.com/",
     icon: "spark",
-    description: "适合放一些公开项目、工具或作品。"
+    description: "这个模块基于 GitHub 和 Codex 持续整理与开发。",
+    iconImageSrc: "/images/icons/github图标-optimized.png"
   },
   {
     name: "灵感收集",
